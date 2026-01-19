@@ -1,26 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 type FeedType = 'foryou' | 'news';
 
 interface FeedSwitcherProps {
-    value: FeedType;
-    onChange: (value: FeedType) => void;
+    value?: FeedType;
+    onChange?: (value: FeedType) => void;
     variant?: 'dark' | 'light';
 }
 
 export function FeedSwitcher({ value, onChange, variant = 'dark' }: FeedSwitcherProps) {
+    const pathname = usePathname();
     const isDark = variant === 'dark';
+
+    // Determine active feed from pathname if value not provided
+    const activeFeed: FeedType = value ?? (pathname === '/news' ? 'news' : 'foryou');
+
+    const handleClick = (feed: FeedType) => {
+        if (onChange) {
+            onChange(feed);
+        }
+    };
 
     return (
         <div className="flex items-center gap-6 text-sm font-semibold">
-            <button
-                onClick={() => onChange('foryou')}
+            <Link
+                href="/"
+                onClick={() => handleClick('foryou')}
                 className={cn(
                     'transition-colors pb-1',
-                    value === 'foryou'
+                    activeFeed === 'foryou'
                         ? isDark
                             ? 'text-white border-b-2 border-white'
                             : 'text-[#1a1a1a] border-b-2 border-[#1a1a1a]'
@@ -30,12 +42,13 @@ export function FeedSwitcher({ value, onChange, variant = 'dark' }: FeedSwitcher
                 )}
             >
                 For You
-            </button>
-            <button
-                onClick={() => onChange('news')}
+            </Link>
+            <Link
+                href="/news"
+                onClick={() => handleClick('news')}
                 className={cn(
                     'transition-colors pb-1',
-                    value === 'news'
+                    activeFeed === 'news'
                         ? isDark
                             ? 'text-white border-b-2 border-red-500'
                             : 'text-[#e63946] border-b-2 border-[#e63946]'
@@ -45,7 +58,8 @@ export function FeedSwitcher({ value, onChange, variant = 'dark' }: FeedSwitcher
                 )}
             >
                 News
-            </button>
+            </Link>
         </div>
     );
 }
+
