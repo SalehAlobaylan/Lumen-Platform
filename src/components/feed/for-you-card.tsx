@@ -156,8 +156,12 @@ export function ForYouCard({
             <div className="absolute right-3 bottom-28 flex flex-col items-center gap-5">
                 {/* Like */}
                 <button
-                    onClick={onLike}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onLike();
+                    }}
                     className="flex flex-col items-center gap-1"
+                    aria-label="Like"
                 >
                     <div className={cn(
                         "w-11 h-11 rounded-full flex items-center justify-center transition-all",
@@ -169,7 +173,10 @@ export function ForYouCard({
                 </button>
 
                 {/* Comment */}
-                <button className="flex flex-col items-center gap-1">
+                <button
+                    className="flex flex-col items-center gap-1"
+                    aria-label="Comment"
+                >
                     <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all">
                         <MessageCircle className="w-6 h-6 text-white" />
                     </div>
@@ -178,8 +185,12 @@ export function ForYouCard({
 
                 {/* Bookmark */}
                 <button
-                    onClick={onBookmark}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onBookmark();
+                    }}
                     className="flex flex-col items-center gap-1"
+                    aria-label="Bookmark"
                 >
                     <div className={cn(
                         "w-11 h-11 rounded-full flex items-center justify-center transition-all",
@@ -191,8 +202,12 @@ export function ForYouCard({
 
                 {/* Share */}
                 <button
-                    onClick={onShare}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onShare();
+                    }}
                     className="flex flex-col items-center gap-1"
+                    aria-label="Share"
                 >
                     <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all">
                         <Share2 className="w-6 h-6 text-white" />
@@ -201,8 +216,12 @@ export function ForYouCard({
 
                 {/* Rewind */}
                 <button
-                    onClick={handleRewind}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleRewind();
+                    }}
                     className="flex flex-col items-center gap-1"
+                    aria-label="Rewind"
                 >
                     <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all">
                         <RotateCcw className="w-5 h-5 text-white" />

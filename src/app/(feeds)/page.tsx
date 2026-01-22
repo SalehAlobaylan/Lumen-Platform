@@ -8,73 +8,6 @@ import { FeedSwitcher } from '@/components/layout';
 import { FeedErrorFallback } from '@/components/error-boundary';
 import type { ContentItem } from '@/types';
 
-// Mock data for development (controlled by env var)
-const MOCK_FORYOU_ITEMS: ContentItem[] = [
-    {
-        id: '1',
-        type: 'VIDEO',
-        title: 'The Future of AI in Creative Industries',
-        author: 'Radio Thamanyah',
-        source_name: 'Thamanyah Podcast',
-        media_url: '',
-        thumbnail_url: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
-        duration_sec: 180,
-        like_count: 1234,
-        comment_count: 89,
-        share_count: 45,
-        published_at: new Date().toISOString(),
-        created_at: new Date().toISOString(),
-    },
-    {
-        id: '2',
-        type: 'PODCAST',
-        title: 'How to Build a Successful Startup in 2026',
-        author: 'Tech Talks',
-        source_name: 'iTunes Podcast',
-        media_url: '',
-        thumbnail_url: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800',
-        duration_sec: 320,
-        like_count: 2456,
-        comment_count: 156,
-        share_count: 89,
-        published_at: new Date().toISOString(),
-        created_at: new Date().toISOString(),
-    },
-    {
-        id: '3',
-        type: 'VIDEO',
-        title: 'Understanding Quantum Computing',
-        author: 'Science Daily',
-        source_name: 'YouTube',
-        media_url: '',
-        thumbnail_url: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800',
-        duration_sec: 240,
-        like_count: 5678,
-        comment_count: 234,
-        share_count: 167,
-        published_at: new Date().toISOString(),
-        created_at: new Date().toISOString(),
-    },
-    {
-        id: '4',
-        type: 'PODCAST',
-        title: 'The Psychology of Decision Making',
-        author: 'Mind Matters',
-        source_name: 'Spotify',
-        media_url: '',
-        thumbnail_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800',
-        duration_sec: 420,
-        like_count: 3421,
-        comment_count: 198,
-        share_count: 112,
-        published_at: new Date().toISOString(),
-        created_at: new Date().toISOString(),
-    },
-];
-
-// Check if we should use mock data
-const USE_MOCK_DATA = process.env.NEXT_PUBLIC_USE_MOCK_DATA === 'true';
-
 export default function ForYouPage() {
     const feedRef = useRef<HTMLDivElement>(null);
     const { activeIndex, setActiveIndex, resetProgress, likedIds, bookmarkedIds } = useFeedStore();
@@ -94,11 +27,8 @@ export default function ForYouPage() {
     const likeMutation = useLikeMutation();
     const bookmarkMutation = useBookmarkMutation();
 
-    // Combine all pages of data, or use mock data
+    // Combine all pages of data
     const forYouItems = useMemo(() => {
-        if (USE_MOCK_DATA) {
-            return MOCK_FORYOU_ITEMS;
-        }
         if (!data?.pages) return [];
         return data.pages.flatMap((page) => page.items);
     }, [data]);
@@ -118,7 +48,6 @@ export default function ForYouPage() {
 
             // Load more when near bottom (infinite scroll)
             if (
-                !USE_MOCK_DATA &&
                 hasNextPage &&
                 !isFetchingNextPage &&
                 scrollPosition + height >= scrollHeight - height * 2
@@ -165,10 +94,10 @@ export default function ForYouPage() {
     };
 
     // Show loading state
-    const showLoading = isLoading && !USE_MOCK_DATA;
+    const showLoading = isLoading;
 
     // Show error state
-    if (isError && !USE_MOCK_DATA) {
+    if (isError) {
         return (
             <div className="h-full w-full bg-black">
                 <FeedErrorFallback

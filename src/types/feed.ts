@@ -15,11 +15,25 @@ export interface ContentItem {
   duration_sec?: number;
   author?: string;
   source_name?: string;
+
+  // Interaction/Engagement stats
   like_count: number;
   comment_count: number;
   share_count: number;
+  view_count?: number; // Added from schema
+
+  // New fields from CMS schema
+  transcript_id?: string;
+  topic_tags?: string[];
+  source_feed_url?: string;
+  metadata?: Record<string, unknown>;
+  status?: 'PENDING' | 'PROCESSING' | 'READY' | 'FAILED' | 'ARCHIVED';
+
   published_at: string;
   created_at: string;
+  updated_at?: string; // Added from schema
+
+  // User-specific state (joined)
   is_liked?: boolean;
   is_bookmarked?: boolean;
 }
